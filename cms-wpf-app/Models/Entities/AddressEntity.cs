@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -8,6 +9,8 @@ namespace cms_wpf_app.Models.Entities
     {
         [Key]
         public int Id { get; set; }
+
+        public Guid CustomerId { get; set; } 
 
         [Column(TypeName = "nvarchar(50)")]
         [StringLength(50)]

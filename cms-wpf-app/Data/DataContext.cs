@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Printing;
+﻿using cms_wpf_app.Models.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace cms_wpf_app.Data
 {
@@ -33,6 +33,9 @@ namespace cms_wpf_app.Data
         #endregion
 
 
-
+        public DbSet<AddressEntity> Addresses { get; set; } = null!;
+        public DbSet<CustomerEntity> Customers { get; set; } = null!;
+        public DbSet<OrderEntity> Orders { get; set; } = null!;
+        public DbSet<OrderCommentEntity> OrderComments { get; set; } = null!;
     }
 }

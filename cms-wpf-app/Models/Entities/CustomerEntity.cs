@@ -12,12 +12,18 @@ namespace cms_wpf_app.Models.Entities
         [Column(TypeName = "nvarchar(50)")]
         [StringLength(50)]
         public string FirstName { get; set; } = string.Empty;
+
         [Column(TypeName = "nvarchar(50)")]
         [StringLength(50)]
         public string LastName { get; set; } = string.Empty;
 
+        [Column(TypeName = "nvarchar(50)")]
+        [StringLength(50)]
+        public string UserName { get; set; } = string.Empty;
+
         [Column(TypeName = "nvarchar(150)")]
         public string Email { get; set; } = string.Empty;
+
         [Column(TypeName = "char(13)")]
         public string? PhoneNumber { get; set; }
 

@@ -6,14 +6,14 @@ namespace cms_wpf_app.ViewModels
     public partial class MainViewModel : ObservableObject
     {
         [ObservableProperty]
-        public static ObservableObject currentViewModel;
+        public static ObservableObject currentViewModel = null!;
 
 
         [RelayCommand]
-        private void OrdersView() => CurrentViewModel = new OrdersViewModel();
+        private static void OrdersView() => currentViewModel = new OrdersViewModel();
 
         [RelayCommand]
-        private void CreateView() => CurrentViewModel = new CreateViewModel();
+        private static void CreateView() => currentViewModel = new CreateViewModel();
 
 
         public MainViewModel()
