@@ -1,0 +1,46 @@
+﻿<Window x:Class="cms_wpf_app.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:cms_wpf_app"
+        xmlns:views="clr-namespace:cms_wpf_app.Views"
+        xmlns:viewmodels="clr-namespace:cms_wpf_app.ViewModels"
+        d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+
+
+        <!--MENU-->
+        <StackPanel Grid.Column="0" Grid.Row="0" Background="#0a0e12">
+            <Button Margin="5" Content="Orders" Command="{Binding OrdersViewCommand}"/>
+            <Button Margin="5" Content="Create"  Command="{Binding CreateViewCommand}"/>
+        </StackPanel>
+
+        <!--BODY-->
+        <ContentControl Background="#21262d" Grid.Column="1" Grid.Row="0" Content="{Binding CurrentViewModel}">
+            <ContentControl.Resources>
+                <DataTemplate DataType="{x:Type viewmodels:OrdersViewModel}">
+                    <views:OrdersView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:CreateViewModel}">
+                    <views:CreateView/>
+                </DataTemplate>
+            </ContentControl.Resources>
+        </ContentControl>
+
+        <!--FOOTER-->
+        <StackPanel Grid.Column="1" Grid.Row="1" Background="#0a0e12">
+        </StackPanel>
+    </Grid>
+</Window>
