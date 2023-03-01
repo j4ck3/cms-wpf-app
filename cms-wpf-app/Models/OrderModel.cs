@@ -1,4 +1,6 @@
-﻿using System;
+﻿using cms_wpf_app.Models.Entities;
+using System;
+using System.Collections.Generic;
 
 namespace cms_wpf_app.Models
 {
@@ -10,5 +12,6 @@ namespace cms_wpf_app.Models
         public string Status { get; set; } = string.Empty;
         public DateTime OrderDate { get; set; }
         public string OrderMessage { get; set; } = string.Empty;
+        public List<OrderCommentEntity> Comments { get; set; }
     }
 }

@@ -41,7 +41,7 @@ namespace cms_wpf_app.ViewModels
 
             CustomerModel customer = new()
             {
-                FirstName = firstName,
+                FirstName = FirstName,
                 LastName = LastName,
                 UserName = UserName,
                 Email = Email,

@@ -8,7 +8,6 @@ namespace cms_wpf_app.ViewModels
 {
     public partial class CreateOrderViewModel : ObservableObject
     {
-        //private static DataContext _context = new DataContext();
 
         [ObservableProperty]
         private string pageTitle = "Create an Issue";
@@ -32,7 +31,7 @@ namespace cms_wpf_app.ViewModels
             OrderModel order = new()
             {
                 UserName = UserName,
-                OrderMessage = OrderMessage,
+                OrderMessage = OrderMessage
             };
 
             await dbservice.SaveOrderToDb(order);

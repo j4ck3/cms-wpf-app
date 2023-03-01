@@ -10,6 +10,9 @@ namespace cms_wpf_app.ViewModels
 
 
         [RelayCommand]
+        private void Customers() => CurrentViewModel = new CustomersViewModel();
+
+        [RelayCommand]
         private void OrdersView() => CurrentViewModel = new OrdersViewModel();
 
         [RelayCommand]
@@ -17,6 +20,7 @@ namespace cms_wpf_app.ViewModels
 
         [RelayCommand]
         private void CreateOrderView() => CurrentViewModel = new CreateOrderViewModel();
+
 
 
         public MainViewModel()

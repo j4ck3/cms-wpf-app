@@ -9,7 +9,7 @@ namespace cms_wpf_app.Models.Entities
         [Key]
         public int Id { get; set; }
 
-        public Guid CustomerId { get; set; }
+        public Guid? CustomerId { get; set; }
 
         public int OrderId { get; set; }
 
