@@ -34,6 +34,7 @@ namespace cms_wpf_app.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    OrderId = table.Column<int>(type: "int", nullable: false),
                     Message = table.Column<string>(type: "nvarchar(500)", nullable: false),
                     MessageDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },

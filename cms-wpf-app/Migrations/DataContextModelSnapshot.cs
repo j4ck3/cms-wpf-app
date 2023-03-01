@@ -108,6 +108,9 @@ namespace cms_wpf_app.Migrations
                     b.Property<DateTime>("MessageDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("OrderComments");

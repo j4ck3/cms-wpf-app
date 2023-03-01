@@ -6,29 +6,22 @@ namespace cms_wpf_app.ViewModels
     public partial class MainViewModel : ObservableObject
     {
         [ObservableProperty]
-        public static ObservableObject currentViewModel = null!;
+        public static ObservableObject currentViewModel;
 
 
         [RelayCommand]
-        private static void OrdersView() => currentViewModel = new OrdersViewModel();
+        private void OrdersView() => CurrentViewModel = new OrdersViewModel();
 
         [RelayCommand]
-        private static void CreateView() => currentViewModel = new CreateViewModel();
+        private void CreateView() => CurrentViewModel = new CreateViewModel();
+
+        [RelayCommand]
+        private void CreateOrderView() => CurrentViewModel = new CreateOrderViewModel();
 
 
         public MainViewModel()
         {
             currentViewModel = new OrdersViewModel();
         }
-
-        //[RelayCommand]
-        //private static void GithubLink()
-        //{
-        //    Process.Start(new ProcessStartInfo
-        //    {
-        //        FileName = "https://github.com/j4ck3/address-book-wpf",
-        //        UseShellExecute = true
-        //    });
-        //}
     }
 }

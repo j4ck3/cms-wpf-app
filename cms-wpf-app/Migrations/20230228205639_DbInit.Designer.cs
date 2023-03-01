@@ -12,7 +12,7 @@ using cms_wpf_app.Data;
 namespace cms_wpf_app.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230228203957_DbInit")]
+    [Migration("20230228205639_DbInit")]
     partial class DbInit
     {
         /// <inheritdoc />
@@ -110,6 +110,9 @@ namespace cms_wpf_app.Migrations
 
                     b.Property<DateTime>("MessageDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
