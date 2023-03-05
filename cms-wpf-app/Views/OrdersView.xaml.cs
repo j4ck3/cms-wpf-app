@@ -1,6 +1,6 @@
 ﻿using cms_wpf_app.Models.Entities;
+using cms_wpf_app.Services;
 using cms_wpf_app.ViewModels;
-using System;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -15,14 +15,29 @@ namespace cms_wpf_app.Views
         {
             InitializeComponent();
         }
+        public INavigationService _navigation;
+        public INavigationService Navigation
+        {
+            get => _navigation;
+            set
+            {
+                _navigation = value;
+            }
+        }
+
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button button && button.DataContext is OrderEntity order)
             {
-                DataContext = new OrderDetailsViewModel(order);
-                OrderDetailsView OrderDetailsView = new();
-                Content = OrderDetailsView;
+                GotodetailsView(_navigation);
+            }
+
+            void GotodetailsView(INavigationService navigation)
+            {
+                Navigation = navigation;
+                Navigation.NavigateTo < OrderDetailsViewModel > ();
+
             }
 
         }

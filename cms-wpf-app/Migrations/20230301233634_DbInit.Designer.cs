@@ -12,8 +12,8 @@ using cms_wpf_app.Data;
 namespace cms_wpf_app.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230301203041_InitDb")]
-    partial class InitDb
+    [Migration("20230301233634_DbInit")]
+    partial class DbInit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -101,7 +101,7 @@ namespace cms_wpf_app.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<Guid>("CustomerId")
+                    b.Property<Guid?>("CustomerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Message")
@@ -138,7 +138,6 @@ namespace cms_wpf_app.Migrations
                         .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("nvarchar(15)");
 
                     b.HasKey("Id");

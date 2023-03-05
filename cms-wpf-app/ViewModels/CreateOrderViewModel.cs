@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace cms_wpf_app.ViewModels
 {
-    public partial class CreateOrderViewModel : ObservableObject
+    public partial class CreateOrderViewModel : Core.ViewModel
     {
 
         [ObservableProperty]
@@ -16,32 +16,32 @@ namespace cms_wpf_app.ViewModels
 
         public CreateOrderViewModel()
         {
-            dbservice= new DbService();
+            dbservice = new DbService();
         }
 
         [ObservableProperty]
-        private string userName = null!;
+        private string inputUserName;
+
         [ObservableProperty]
-        private string orderMessage = null!;
+        private string inputOrderMessage;
 
         [RelayCommand]
         private async Task CreateOrder()
         {
-
             OrderModel order = new()
             {
-                UserName = UserName,
-                OrderMessage = OrderMessage
+                UserName = InputUserName,
+                OrderMessage = InputOrderMessage
             };
 
-            await dbservice.SaveOrderToDb(order);
-            ClearForm();
+            await dbservice.SaveOrderToDbAsync(order);
+           // ClearForm();
         }
 
-        public void ClearForm()
-        {
-            UserName = string.Empty;
-            OrderMessage = string.Empty;
-        }
+        //private static void ClearForm()
+        //{
+        //    InputUserName = string.Empty;
+        //    InputOrderMessage = string.Empty;
+        //}
     }
 }

@@ -4,6 +4,7 @@ using cms_wpf_app.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace cms_wpf_app.Services
@@ -30,7 +31,7 @@ namespace cms_wpf_app.Services
             if (_addressEntity != null)
                 _customerEntity.AddressId = _addressEntity.Id;
             else
-                _customerEntity.Address = new AddressEntity
+                _customerEntity.Address = new Models.Entities.AddressModel
                 {
                     CustomerId = customer.Id,
                     StreetName = customer.StreetName,
@@ -43,73 +44,99 @@ namespace cms_wpf_app.Services
         }
 
         //--------------Save Order to database
-        public async Task SaveOrderToDb(OrderModel order)
+
+        public async Task SaveOrderToDbAsync(OrderModel order)
         {
             try
             {
                 var _customer = await _context.Customers.FirstOrDefaultAsync(x => x.UserName == order.UserName);
                 if (_customer != null)
-                {
-                    var _orderEntity = new OrderEntity
-                    {
-                        CustomerId = _customer.Id,
-                        OrderMessage = order.OrderMessage,
-                        Status = "not-started",
-                        OrderDate = DateTime.Now,
-                    };
-                    _context.Add(_orderEntity);
-                    await _context.SaveChangesAsync();
-                }
+                    CustomerId = _customer.Id;
             }
             catch{}
+
+            var _orderEntity = new OrderEntity
+            {
+                CustomerId = CustomerId != Guid.Empty ? CustomerId : Guid.Empty,
+                OrderMessage = order.OrderMessage,
+                Status = "not-started",
+                OrderDate = DateTime.Now,
+            };
+            _context.Add(_orderEntity);
+            await _context.SaveChangesAsync();
         }
 
 
         //--------------Get All Orders
-        public async Task<List<OrderEntity>> GetOrders()
+        public async Task<List<OrderEntity>> GetOrdersAsync()
         {
-            return  await _context.Orders.ToListAsync();
+            return await _context.Orders.ToListAsync();
         }
 
 
         //--------------Get All Customers
-        public async Task<List<CustomerModel>> GetCustomers()
+        public async Task<List<CustomerEntity>> GetCustomersAsync()
         {
-            //return await _context.Customers.ToListAsync();
+            var _customers = new List<CustomerEntity>();
 
-            var _customers = new List<CustomerModel>();
-
-            foreach (var _customer in await _context.Customers.Include(x => x.Address).ToListAsync())
-                _customers.Add(new CustomerModel
+            foreach (var _customerEntity in await _context.Customers.Include(x => x.Address).ToListAsync())
+                _customers.Add(new CustomerEntity
                 {
-                    Id = _customer.Id,
-                    FirstName = _customer.FirstName,
-                    LastName = _customer.LastName,
-                    Email = _customer.Email,
-                    PhoneNumber = _customer.PhoneNumber,
-                    StreetName = _customer.Address.StreetName,
-                    PostalCode = _customer.Address.PostalCode,
-                    City = _customer.Address.City
+                    Id = _customerEntity.Id,
+                    FirstName = _customerEntity.FirstName,
+                    LastName = _customerEntity.LastName,
+                    UserName = _customerEntity.UserName,
+                    Email = _customerEntity.Email,
+                    PhoneNumber = _customerEntity.PhoneNumber,
+                    Address = _customerEntity.Address
                 });
 
             return _customers;
         }
 
-        //--------------Get Specific Order
-        public async Task<OrderEntity>GetOrder(int Id)
+        //--------------Get Specific Order and comments
+        public async Task<OrderEntity> GetOrder(int Id)
         {
-            var _orderEntity = await _context.Orders.FirstOrDefaultAsync(x => x.Id == Id);
+            var _order = await _context.Orders.FirstOrDefaultAsync(x => x.Id == Id);
 
-            if (_orderEntity != null )
-                return _orderEntity;
+            if (_order != null)
+                return _order;
 
-            return null! ;
+            return null!;
+            //var _orderComments = await _context.OrderComments.Include(x => x.Id == Id).ToListAsync();
+            //var _orderCommentsList = new List<OrderCommentEntity>();
+            //foreach (var _orderComments in await _context.OrderComments.ToListAsync())
+            //    _orderCommentsList.Add(new OrderCommentEntity
+            //    {
+            //        Id = _orderComments.Id,
+            //        CustomerId = _orderComments.CustomerId,
+            //        OrderId = _orderComments.OrderId,
+            //        Message = _orderComments.Message,
+            //        MessageDate = _orderComments.MessageDate,
+            //    });
+
+            //if (_order != null )
+            //  return new OrderModel
+            //  {
+            //      Id = _order.Id,
+            //      CustomerId = _order.CustomerId != Guid.Empty ? _order.CustomerId : Guid.Empty,
+            //      Status = _order.Status ?? null!,
+            //      OrderDate = _order.OrderDate,
+            //      OrderMessage = _order.OrderMessage
+            //  };
+
+
+        }
+
+        public async Task<List<OrderCommentEntity>> GetOrderCommentsAsync(int Id)
+        {
+            return await _context.OrderComments.Where(x => x.OrderId == Id).ToListAsync();
         }
 
 
-        //--------------------Save Comment to database
+        //--------------------Save Order Comment to database
         private Guid CustomerId;
-
+         
         public async Task SaveCommentToDbAsync(OrderCommentModel comment)
         {
             try
@@ -131,11 +158,5 @@ namespace cms_wpf_app.Services
             await _context.SaveChangesAsync();
         }
 
-
-        //--------------Get Order Comments
-        //public async Task<OrderEntity> GetOrderComments(int Id)
-        //{
-
-        //}
     }
 }

@@ -33,7 +33,7 @@ namespace cms_wpf_app.Data
         #endregion
 
 
-        public DbSet<AddressEntity> Addresses { get; set; } = null!;
+        public DbSet<AddressModel> Addresses { get; set; } = null!;
         public DbSet<CustomerEntity> Customers { get; set; } = null!;
         public DbSet<OrderEntity> Orders { get; set; } = null!;
         public DbSet<OrderCommentEntity> OrderComments { get; set; } = null!;

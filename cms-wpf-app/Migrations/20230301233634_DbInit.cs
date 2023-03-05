@@ -33,7 +33,7 @@ namespace cms_wpf_app.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     OrderId = table.Column<int>(type: "int", nullable: false),
                     Message = table.Column<string>(type: "nvarchar(500)", nullable: false),
                     MessageDate = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -50,7 +50,7 @@ namespace cms_wpf_app.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(15)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(15)", nullable: true),
                     OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     OrderMessage = table.Column<string>(type: "nvarchar(1000)", nullable: false)
                 },

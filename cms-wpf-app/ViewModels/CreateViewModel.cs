@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace cms_wpf_app.ViewModels
 {
-    public partial class CreateViewModel : ObservableObject
+    public partial class CreateViewModel : Core.ViewModel
     {
         [ObservableProperty]
         private string pageTitle = "Register";

@@ -98,7 +98,7 @@ namespace cms_wpf_app.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<Guid>("CustomerId")
+                    b.Property<Guid?>("CustomerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Message")
@@ -135,7 +135,6 @@ namespace cms_wpf_app.Migrations
                         .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("nvarchar(15)");
 
                     b.HasKey("Id");

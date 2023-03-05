@@ -1,4 +1,4 @@
-﻿using cms_wpf_app.Models;
+﻿using cms_wpf_app.Models.Entities;
 using cms_wpf_app.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.Generic;
@@ -6,26 +6,27 @@ using System.Threading.Tasks;
 
 namespace cms_wpf_app.ViewModels
 {
-    public partial class CustomersViewModel : ObservableObject 
+    public partial class CustomersViewModel : Core.ViewModel
     {
+
+        [ObservableProperty]
+        private string pageTitle = "Customers";
+
         private DbService dbService;
 
         [ObservableProperty]
-        private string pagetitle = "Customers";
+        public List<CustomerEntity> customers;
 
-
-        [ObservableProperty]
-        public List<CustomerModel> customers;
-
-        public  CustomersViewModel()
+        public CustomersViewModel()
         {
             dbService = new DbService();
-            GetAllCustomers();
+            GetAllCustomersAsync();
         }
 
-        private async Task<List<CustomerModel>> GetAllCustomers()
+        private async Task<List<CustomerEntity>> GetAllCustomersAsync()
         {
-            return customers = await dbService.GetCustomers();
+            Customers = await dbService.GetCustomersAsync();
+            return Customers;
         }
     }
 }

@@ -11,12 +11,19 @@
              >
 
     <Grid>
-        <DockPanel Background="Beige" Margin="25">
+        <TextBlock Text="{Binding PageTitle}" HorizontalAlignment="Center" FontSize="22" FontWeight="Medium" Margin="0 0 0 20" />
+        <DockPanel Margin="50">
+           
             <DataGrid ColumnWidth="*" x:Name="PersonsGrid" x:FieldModifier="public" ItemsSource="{Binding Customers}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" BorderBrush="{x:Null}" Background="White" FontFamily="Cascadia Mono SemiBold" >
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="First Name" Binding="{Binding FirstName}" />
-                    <DataGridTextColumn Header="User Name" Binding="{Binding UserName}" />
+                    <DataGridTextColumn Header="Last Name" Binding="{Binding LastName}" />
                     <DataGridTextColumn Header="Email" Binding="{Binding Email}" />
+                    <DataGridTextColumn Header="UserName" Binding="{Binding UserName}" />
+                    <DataGridTextColumn Header="Phone Number" Binding="{Binding Email}" />
+                    <DataGridTextColumn Header="StreetName" Binding="{Binding Address.StreetName}" />
+                    <DataGridTextColumn Header="PostalCode" Binding="{Binding Address.PostalCode}" />
+                    <DataGridTextColumn Header="City" Binding="{Binding Address.City}" />
                     <!--<DataGridTemplateColumn>
                         <DataGridTemplateColumn.HeaderTemplate>
                             <DataTemplate>

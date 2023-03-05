@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace cms_wpf_app.Models.Entities
 {
-    public class AddressEntity
+    public class AddressModel
     {
         [Key]
         public int Id { get; set; }

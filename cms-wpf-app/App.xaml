@@ -1,9 +1,25 @@
 ﻿<Application x:Class="cms_wpf_app.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:cms_wpf_app"
+             xmlns:local="clr-namespace:cms_wpf_app" 
+             xmlns:views="clr-namespace:cms_wpf_app.Views"
+             xmlns:viewmodels="clr-namespace:cms_wpf_app.ViewModels"
              >
     <Application.Resources>
-         
+        <DataTemplate DataType="{x:Type viewmodels:OrdersViewModel}">
+            <views:OrdersView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:CreateViewModel}">
+            <views:CreateView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:CreateOrderViewModel}">
+            <views:CreateOrderView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:CustomersViewModel}">
+            <views:CustomersView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:OrderDetailsViewModel}">
+            <views:OrderDetailsView/>
+        </DataTemplate>
     </Application.Resources>
 </Application>

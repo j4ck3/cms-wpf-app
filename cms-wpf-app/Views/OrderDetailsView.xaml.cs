@@ -12,10 +12,5 @@ namespace cms_wpf_app.Views
         {
             InitializeComponent();
         }
-
-        private void CancelBtn_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            Content = new OrdersViewModel();
-        }
     }
 }

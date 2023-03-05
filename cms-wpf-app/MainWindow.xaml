@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:cms_wpf_app"
         xmlns:views="clr-namespace:cms_wpf_app.Views"
         xmlns:viewmodels="clr-namespace:cms_wpf_app.ViewModels"
         d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
@@ -18,16 +17,15 @@
 
 
         <!--MENU-->
-        <StackPanel Grid.Column="0" Grid.Row="0" Background="#0a0e12">
-            <Button Margin="15" Padding="0 5 0 5" Content="Orders" Command="{Binding OrdersViewCommand}"/>
-            <Button Margin="15 0 15 15" Padding="0 5 0 5" Content="Customers"  Command="{Binding CustomersCommand}"/>
-            <Button Margin="15 0 15 15" Padding="0 5 0 5" Content="Register"  Command="{Binding CreateViewCommand}"/>
-            <Button Margin="15 0 15 15" Padding="0 5 0 5" Content="Create Order"  Command="{Binding CreateOrderViewCommand}"/>
-
+        <StackPanel Grid.Column="0" Grid.Row="0" Background="#12474A">
+            <Button Margin="15" Padding="0 5 0 5" Content="Orders" Command="{Binding NavigateToOrdersViewCommand}"/>
+            <Button Margin="15 0 15 15" Padding="0 5 0 5" Content="Customers"  Command="{Binding NavigateToCustomersViewCommand}"/>
+            <Button Margin="15 0 15 15" Padding="0 5 0 5" Content="Register"  Command="{Binding NavigateToCreateCustomerViewCommand}"/>
+            <Button Margin="15 0 15 15" Padding="0 5 0 5" Content="Create Order"  Command="{Binding NavigateToCreateOrderViewCommand}"/>
         </StackPanel>
 
         <!--BODY-->
-        <ContentControl Background="#21262d" Grid.Column="1" Grid.Row="0" Content="{Binding CurrentViewModel}">
+        <ContentControl Background="#21262d" Grid.Column="1" Grid.Row="0" Content="{Binding Navigation.CurrentView}">
             <ContentControl.Resources>
                 <DataTemplate DataType="{x:Type viewmodels:OrdersViewModel}">
                     <views:OrdersView/>
