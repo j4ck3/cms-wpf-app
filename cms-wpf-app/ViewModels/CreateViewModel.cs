@@ -2,7 +2,9 @@
 using cms_wpf_app.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Threading.Tasks;
+using System.Windows.Navigation;
 
 namespace cms_wpf_app.ViewModels
 {
@@ -48,11 +50,11 @@ namespace cms_wpf_app.ViewModels
                 PhoneNumber = PhoneNumber,
                 StreetName = StreetName,
                 PostalCode = PostalCode,
-                City = City,
+                City = city,
             };
 
            await dbservice.SaveToDb(customer);
-            ClearForm();
+           ClearForm();
         }
 
         //Helper
@@ -65,7 +67,7 @@ namespace cms_wpf_app.ViewModels
             PhoneNumber = string.Empty;
             StreetName = string.Empty;
             PostalCode = string.Empty;
-            City = string.Empty;
+            city = string.Empty;
         }
 
     }

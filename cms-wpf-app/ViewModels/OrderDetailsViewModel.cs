@@ -4,6 +4,7 @@ using cms_wpf_app.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
 namespace cms_wpf_app.ViewModels
@@ -12,6 +13,7 @@ namespace cms_wpf_app.ViewModels
     {
         private int Id;
         private DbService dbService;
+
 
         [ObservableProperty]
         private string pageTitle = $"Order";
@@ -27,22 +29,49 @@ namespace cms_wpf_app.ViewModels
             }
         }
         public Core.RelayCommand NavigateToOrdersViewCommand { get; set; }
-        public OrderDetailsViewModel(INavigationService navigation, int Id)
+        public OrderDetailsViewModel(INavigationService navigationService)
         {
             dbService = new DbService();
-            GetOrderFromDbAsync(Id);
-            GetOrderCommentsFromDbAsync(Id);
+            GetOrderFromDb(Id);
+            GetAllOrders();
+            
 
 
-            Navigation = navigation;
+            Navigation = navigationService;
             NavigateToOrdersViewCommand = new Core.RelayCommand(o => { Navigation.NavigateTo<OrdersViewModel>(); }, o => true);
         }
 
-        private async Task GetOrderFromDbAsync(int Id)
+        [ObservableProperty]
+        private ObservableCollection<OrderEntity> orderList = new();
+
+        private async Task<ObservableCollection<OrderEntity>> GetAllOrders()
+        {
+            return OrderList = await dbService.GetOrdersAsync();
+            // return OrderList;
+        }
+
+        private OrderEntity? _selectedOrder;
+
+        public OrderEntity? SelectedOrder
+        {
+            get
+            {
+                if (_selectedOrder != null)
+                    return _selectedOrder;
+                return null;
+            }
+            set
+            {
+                _selectedOrder = value;
+                OnPropertyChanged(nameof(SelectedOrder));
+            }
+        }
+
+
+        private async Task<OrderEntity> GetOrderFromDb(int Id)
         {
             var _orderModel = await dbService.GetOrder(Id);
-            SetOrderData(_orderModel);
-
+            return _orderModel;
         }
 
         [ObservableProperty]
@@ -52,25 +81,24 @@ namespace cms_wpf_app.ViewModels
         [ObservableProperty]
         private string orderDate;
         [ObservableProperty]
-        public List<OrderCommentEntity> comments;
+        private List<OrderCommentEntity> comments;
 
-
-        private async Task GetOrderCommentsFromDbAsync(int Id)
-        {
-            Comments = await dbService.GetOrderCommentsAsync(Id);
-        }
 
         private void SetOrderData(OrderEntity _orderModel)
         {
             if (_orderModel != null)
             {
+                //se enklare sätt.
                 Id = _orderModel.Id;
-                 OrderMessage = _orderModel.OrderMessage;
-                 OrderStatus = _orderModel.Status ?? null!;
-                 OrderDate = _orderModel.OrderDate.ToString();
+                OrderMessage = _orderModel.OrderMessage;
+                OrderStatus = _orderModel.Status ?? null!;
+                OrderDate = _orderModel.OrderDate.ToString();
             }
         }
-
+        //private async Task GetOrderCommentsFromDbAsync(int Id)
+        //{
+        //    Comments = await dbService.GetOrderCommentsAsync(Id);
+        //}
 
         #region CreateComment
 
@@ -78,7 +106,7 @@ namespace cms_wpf_app.ViewModels
         private string tbOrderComment = string.Empty;
 
         [ObservableProperty]
-        private string tbUserNameCreateOrder = string.Empty;
+        private string tbUserNameCreateMessage = string.Empty;
 
 
 
@@ -91,7 +119,7 @@ namespace cms_wpf_app.ViewModels
             OrderCommentModel comment = new()
             {
                 Message = TbOrderComment,
-                UserName = TbUserNameCreateOrder,
+                UserName = TbUserNameCreateMessage,
                 OrderId = Id
             };
             
@@ -101,8 +129,8 @@ namespace cms_wpf_app.ViewModels
         }
         public void ClearForm()
         {
-            string TbOrderComment = string.Empty;
-            string TbUserNameCreateOrder = string.Empty;
+            TbOrderComment = string.Empty;
+            TbUserNameCreateMessage = string.Empty;
         }
         #endregion
     }                                       

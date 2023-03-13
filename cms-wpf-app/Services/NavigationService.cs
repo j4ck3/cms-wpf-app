@@ -19,7 +19,7 @@ namespace cms_wpf_app.Services;
         {
             get => _currentView;
 
-            private set
+            set
             {
                 _currentView = value;
                 OnPropertyChanged();

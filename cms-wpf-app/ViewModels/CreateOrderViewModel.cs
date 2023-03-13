@@ -35,13 +35,13 @@ namespace cms_wpf_app.ViewModels
             };
 
             await dbservice.SaveOrderToDbAsync(order);
-           // ClearForm();
+            //ClearForm();
         }
 
         //private static void ClearForm()
         //{
-        //    InputUserName = string.Empty;
-        //    InputOrderMessage = string.Empty;
+        //    nputUserName = string.Empty;
+        //    inputOrderMessage = string.Empty;
         //}
     }
 }

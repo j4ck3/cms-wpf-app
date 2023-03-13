@@ -3,17 +3,20 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
-             
-             xmlns:local="clr-namespace:cms_wpf_app.Views"
+             mc:Ignorable="d"
              xmlns:viewmodels="clr-namespace:cms_wpf_app.ViewModels"
              d:DataContext="{d:DesignInstance viewmodels:OrdersViewModel}"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <TextBlock Text="{Binding PageTitle}" HorizontalAlignment="Center" FontSize="22" FontWeight="Medium" Margin="0 100 0 0"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="{Binding PageTitle}" HorizontalAlignment="Center" FontSize="22" FontWeight="Medium" Margin="0 0 0 5" />
 
-        <DockPanel Background="Beige" Margin="25">
-            <DataGrid ColumnWidth="*" ItemsSource="{Binding Orders}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" BorderBrush="{x:Null}" Background="White" FontFamily="Cascadia Mono SemiBold" >
+        <DockPanel Grid.Row="1" Background="Beige" Margin="25">
+            <DataGrid ColumnWidth="*" ItemsSource="{Binding Orders}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserReorderColumns="False" CanUserResizeRows="False" BorderBrush="{x:Null}" Background="White" FontFamily="Cascadia Mono SemiBold" x:Name="Orders_Grid" >
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Message" Binding="{Binding OrderMessage}" />
                     <DataGridTextColumn Header="Created" Binding="{Binding OrderDate}" />
@@ -27,18 +30,25 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Button Content="Details"
-                                            Click="Button_Click"    
+                                    <Button Content="View"
+                                            Padding="10 0 10 0"
                                             Margin="0 0 5 0"
-                                            Width="60"
-                                            Padding="5 0 5 0">
-                                           
+                                            Command="{Binding Path=DataContext.NavigateToOrderDetailsViewCommand,       
+                                             RelativeSource={RelativeSource FindAncestor,
+                                             AncestorType={x:Type DataGrid}}}">
                                     </Button>
-                                    <!--<Button x:Name="Edit"
+                                    <Button x:Name="Edit"
+                                            Margin="0 0 5 0"
                                             Content="Edit"
                                             Width="50"
                                             Click="Edit_Click">
-                                    </Button>-->
+                                    </Button>
+                                    <Button x:Name="Delete_order"
+                                            Margin="0 0 5 0"
+                                            Content="Delete"
+                                            Width="50"
+                                            Click="Delete_order_Click" >
+                                    </Button>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
@@ -46,5 +56,15 @@
                 </DataGrid.Columns>
             </DataGrid>
         </DockPanel>
+
+
+        <StackPanel Grid.Row="2" HorizontalAlignment="Center">
+            <Button
+                Command="{Binding CreateOrderViewCommand}"
+                Height="30"
+                Width="120"
+                Content="Create A order">
+            </Button>
+        </StackPanel>
     </Grid>
 </UserControl>

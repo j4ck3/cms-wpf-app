@@ -21,5 +21,8 @@
         <DataTemplate DataType="{x:Type viewmodels:OrderDetailsViewModel}">
             <views:OrderDetailsView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:UpdateOrderViewModel}">
+            <views:UpdateOrderView/>
+        </DataTemplate>
     </Application.Resources>
 </Application>

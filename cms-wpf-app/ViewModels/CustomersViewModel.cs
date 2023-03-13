@@ -9,6 +9,18 @@ namespace cms_wpf_app.ViewModels
     public partial class CustomersViewModel : Core.ViewModel
     {
 
+        public INavigationService _navigation;
+        public INavigationService Navigation
+        {
+            get => _navigation;
+            set
+            {
+                _navigation = value;
+                OnPropertyChanged();
+            }
+        }
+        public Core.RelayCommand CreateCustomerViewCommand { get; set; }
+
         [ObservableProperty]
         private string pageTitle = "Customers";
 
@@ -17,10 +29,14 @@ namespace cms_wpf_app.ViewModels
         [ObservableProperty]
         public List<CustomerEntity> customers;
 
-        public CustomersViewModel()
+        public CustomersViewModel(INavigationService navigationService)
         {
             dbService = new DbService();
             GetAllCustomersAsync();
+
+            Navigation = navigationService;
+            CreateCustomerViewCommand = new Core.RelayCommand(o => { Navigation.NavigateTo<CreateViewModel>(); }, o => true);
+
         }
 
         private async Task<List<CustomerEntity>> GetAllCustomersAsync()

@@ -1,45 +1,49 @@
 ﻿using cms_wpf_app.Models.Entities;
-using cms_wpf_app.Services;
 using cms_wpf_app.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
+using cms_wpf_app.Services;
 
-namespace cms_wpf_app.Views
+namespace cms_wpf_app.Views;
+
+
+
+
+public partial class OrdersView : UserControl
 {
-    /// <summary>
-    /// Interaction logic for OrdersView.xaml
-    /// </summary>
-    public partial class OrdersView : UserControl
+
+    private readonly DbService _dbService;
+    public OrdersView()
     {
-        public OrdersView()
+        InitializeComponent();
+        _dbService = new DbService();
+    }
+
+    private void Edit_Click(object sender, System.Windows.RoutedEventArgs e)
+    {
+        Button? button = sender as Button;
+
+        if (button.DataContext is OrderEntity order)
         {
-            InitializeComponent();
+            DataContext = new UpdateOrderViewModel(order);
+            UpdateOrderView UpdateView = new();
+            Content = UpdateView;
         }
-        public INavigationService _navigation;
-        public INavigationService Navigation
+    }
+
+    private void Delete_order_Click(object sender, System.Windows.RoutedEventArgs e)
+    {
+        if (Orders_Grid.SelectedItem is OrderEntity order)
         {
-            get => _navigation;
-            set
+            int Id = order.Id;
+            if (Id != null)
             {
-                _navigation = value;
+                if (MessageBox.Show($"Are you sure you want to delete the Order?",
+                "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    _dbService.RemoveOrderAsync(Id);
+                }
             }
-        }
-
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button button && button.DataContext is OrderEntity order)
-            {
-                GotodetailsView(_navigation);
-            }
-
-            void GotodetailsView(INavigationService navigation)
-            {
-                Navigation = navigation;
-                Navigation.NavigateTo < OrderDetailsViewModel > ();
-
-            }
-
         }
     }
 }

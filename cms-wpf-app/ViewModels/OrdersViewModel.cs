@@ -1,13 +1,12 @@
 ﻿using cms_wpf_app.Models.Entities;
 using cms_wpf_app.Services;
-using cms_wpf_app.Core;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace cms_wpf_app.ViewModels
 {
-    public partial class OrdersViewModel : ViewModel
+    public partial class OrdersViewModel : Core.ViewModel
     {
         public INavigationService _navigation;
         public INavigationService Navigation
@@ -21,28 +20,27 @@ namespace cms_wpf_app.ViewModels
         }
 
         public Core.RelayCommand NavigateToOrderDetailsViewCommand { get; set; }
+        public Core.RelayCommand CreateOrderViewCommand { get; set; }
 
         [ObservableProperty]
-        private string pageTitle = "Orders";
+        private string pageTitle = "Manage Orders";
 
         private DbService dbService;
 
         [ObservableProperty]
-        private List<OrderEntity> orders;
+        private ObservableCollection<OrderEntity> orders;
 
 
         public OrdersViewModel(INavigationService navigation)
         {
             Navigation = navigation;
             NavigateToOrderDetailsViewCommand = new Core.RelayCommand(o => { Navigation.NavigateTo<OrderDetailsViewModel>(); }, o => true);
+            CreateOrderViewCommand = new Core.RelayCommand(o => { Navigation.NavigateTo<CreateOrderViewModel>(); }, o => true);
             dbService = new DbService();
             GetAllOrders();
         }
 
-
-
-
-        private async Task<List<OrderEntity>> GetAllOrders()
+        private async Task<ObservableCollection<OrderEntity>> GetAllOrders()
         {
             Orders = await dbService.GetOrdersAsync();
             return Orders;

@@ -4,8 +4,11 @@ using cms_wpf_app.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Documents;
 
 namespace cms_wpf_app.Services
 {
@@ -59,7 +62,7 @@ namespace cms_wpf_app.Services
             {
                 CustomerId = CustomerId != Guid.Empty ? CustomerId : Guid.Empty,
                 OrderMessage = order.OrderMessage,
-                Status = "not-started",
+                Status = "Pending",
                 OrderDate = DateTime.Now,
             };
             _context.Add(_orderEntity);
@@ -68,9 +71,12 @@ namespace cms_wpf_app.Services
 
 
         //--------------Get All Orders
-        public async Task<List<OrderEntity>> GetOrdersAsync()
+        public async Task<ObservableCollection<OrderEntity>> GetOrdersAsync()
         {
-            return await _context.Orders.ToListAsync();
+            var orders = await _context.Orders.ToListAsync();
+            var oc = new ObservableCollection<OrderEntity>();
+            orders.ForEach(oc.Add);
+            return oc;
         }
 
 
@@ -101,31 +107,7 @@ namespace cms_wpf_app.Services
 
             if (_order != null)
                 return _order;
-
             return null!;
-            //var _orderComments = await _context.OrderComments.Include(x => x.Id == Id).ToListAsync();
-            //var _orderCommentsList = new List<OrderCommentEntity>();
-            //foreach (var _orderComments in await _context.OrderComments.ToListAsync())
-            //    _orderCommentsList.Add(new OrderCommentEntity
-            //    {
-            //        Id = _orderComments.Id,
-            //        CustomerId = _orderComments.CustomerId,
-            //        OrderId = _orderComments.OrderId,
-            //        Message = _orderComments.Message,
-            //        MessageDate = _orderComments.MessageDate,
-            //    });
-
-            //if (_order != null )
-            //  return new OrderModel
-            //  {
-            //      Id = _order.Id,
-            //      CustomerId = _order.CustomerId != Guid.Empty ? _order.CustomerId : Guid.Empty,
-            //      Status = _order.Status ?? null!,
-            //      OrderDate = _order.OrderDate,
-            //      OrderMessage = _order.OrderMessage
-            //  };
-
-
         }
 
         public async Task<List<OrderCommentEntity>> GetOrderCommentsAsync(int Id)
@@ -133,6 +115,7 @@ namespace cms_wpf_app.Services
             return await _context.OrderComments.Where(x => x.OrderId == Id).ToListAsync();
         }
 
+        //Hämta kommentar och användaren på en order + anändaren på kommentaren.
 
         //--------------------Save Order Comment to database
         private Guid CustomerId;
@@ -157,6 +140,43 @@ namespace cms_wpf_app.Services
             _context.Add(_orderCommentEntity);
             await _context.SaveChangesAsync();
         }
+        //--------------------Update Order
+        public async Task UpdateOrderAsync(OrderModel order)
+        {
+            var _order = await _context.Orders.FirstOrDefaultAsync(x => x.Id == order.Id);
 
+            if (order.UserName != null)
+            {
+                try
+                {
+                    var _customer = await _context.Customers.FirstOrDefaultAsync(x => x.UserName == order.UserName);
+                    if (_customer != null)
+                        CustomerId = _customer.Id;
+                }
+                catch { }
+            };
+
+
+            if (_order != null && order.OrderMessage != null)
+            {
+                if (CustomerId != Guid.Empty) 
+                { _order.CustomerId = CustomerId; }
+                if (order.Status != null)
+                { _order.Status = order.Status; }
+                _order.OrderMessage = order.OrderMessage;
+                _context.Update(_order);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task RemoveOrderAsync(int id)
+        {
+            var _order = await _context.Orders.FirstOrDefaultAsync(x => x.Id == id);
+            if (_order != null)
+            {
+                _context.Remove(_order);
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }

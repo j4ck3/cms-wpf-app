@@ -14,6 +14,7 @@ namespace cms_wpf_app
 
         public App()
         {
+
             IServiceCollection services = new ServiceCollection();
 
             services.AddSingleton<MainWindow>(provider => new MainWindow()
@@ -38,7 +39,7 @@ namespace cms_wpf_app
         protected override void OnStartup(StartupEventArgs e)
         {
             var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
-            
+
 
             mainWindow.Show();
             base.OnStartup(e);
