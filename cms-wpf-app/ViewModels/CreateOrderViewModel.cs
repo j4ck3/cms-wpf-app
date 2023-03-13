@@ -10,7 +10,7 @@ namespace cms_wpf_app.ViewModels
     {
 
         [ObservableProperty]
-        private string pageTitle = "Create an Issue";
+        private string pageTitle = "Create an Order";
 
         private DbService dbservice;
 

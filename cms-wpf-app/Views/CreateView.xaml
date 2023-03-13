@@ -11,8 +11,9 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
     <Grid>
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="200">
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="400">
             <TextBlock Text="{Binding PageTitle}" HorizontalAlignment="Center" FontSize="22" FontWeight="Medium" Margin="0 0 0 20" />
+            <TextBlock Text="{Binding FormValidatoin}" HorizontalAlignment="Center" FontSize="12" FontWeight="Medium" Margin="0 0 0 20" />
             <TextBlock Text="First Name" FontWeight="DemiBold" />
             <TextBox Text="{Binding FirstName}" Padding="5"/>
 

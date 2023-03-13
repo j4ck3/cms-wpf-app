@@ -6,7 +6,7 @@ namespace cms_wpf_app.Data
     internal class DataContext : DbContext
     {
 
-        private readonly string _connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Fia\Desktop\cms-wpf-app\cms-wpf-app\Data\local_db_2.mdf;Integrated Security=True;Connect Timeout=30";
+        private readonly string _connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Jakob\Desktop\cms-wpf-app\cms-wpf-app\Data\local_db_2.mdf;Integrated Security=True;Connect Timeout=30";
 
 
         #region setup

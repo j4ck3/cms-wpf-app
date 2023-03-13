@@ -2,9 +2,7 @@
 using cms_wpf_app.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Threading.Tasks;
-using System.Windows.Navigation;
 
 namespace cms_wpf_app.ViewModels
 {
@@ -12,6 +10,9 @@ namespace cms_wpf_app.ViewModels
     {
         [ObservableProperty]
         private string pageTitle = "Register";
+
+        [ObservableProperty]
+        private string formValidatoin = string.Empty;
 
 
         private DbService dbservice;
@@ -50,10 +51,10 @@ namespace cms_wpf_app.ViewModels
                 PhoneNumber = PhoneNumber,
                 StreetName = StreetName,
                 PostalCode = PostalCode,
-                City = city,
+                City = City,
             };
 
-           await dbservice.SaveToDb(customer);
+           FormValidatoin = await dbservice.SaveToDb(customer);
            ClearForm();
         }
 
@@ -67,7 +68,7 @@ namespace cms_wpf_app.ViewModels
             PhoneNumber = string.Empty;
             StreetName = string.Empty;
             PostalCode = string.Empty;
-            city = string.Empty;
+            City = string.Empty;
         }
 
     }

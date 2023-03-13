@@ -7,8 +7,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Documents;
 
 namespace cms_wpf_app.Services
 {
@@ -19,7 +17,7 @@ namespace cms_wpf_app.Services
 
 
         //--------------Save Customer to database
-        public async Task SaveToDb(CustomerModel customer)
+        public async Task<string> SaveToDb(CustomerModel customer)
         {
             var _customerEntity = new CustomerEntity
             {
@@ -42,8 +40,15 @@ namespace cms_wpf_app.Services
                     City = customer.City
                 };
 
-            _context.Add(_customerEntity);
-            await _context.SaveChangesAsync();
+            //Execute if UserName is Unique.
+            var _user = await _context.Customers.FirstOrDefaultAsync(x => x.UserName == customer.UserName);
+            if (_user == null)
+            {
+                _context.Add(_customerEntity);
+                await _context.SaveChangesAsync();
+                return "You have been registered!";
+            }
+            else return "A Customer with that Username Already Exists!";
         }
 
         //--------------Save Order to database
@@ -65,6 +70,7 @@ namespace cms_wpf_app.Services
                 Status = "Pending",
                 OrderDate = DateTime.Now,
             };
+
             _context.Add(_orderEntity);
             await _context.SaveChangesAsync();
         }
