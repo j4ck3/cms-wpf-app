@@ -49,7 +49,7 @@ namespace cms_wpf_app.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Addresses");
+                    b.ToTable("Addresses", (string)null);
                 });
 
             modelBuilder.Entity("cms_wpf_app.Models.Entities.CustomerEntity", b =>
@@ -90,7 +90,7 @@ namespace cms_wpf_app.Migrations
                     b.HasIndex("UserName")
                         .IsUnique();
 
-                    b.ToTable("Customers");
+                    b.ToTable("Customers", (string)null);
                 });
 
             modelBuilder.Entity("cms_wpf_app.Models.Entities.OrderCommentEntity", b =>
@@ -116,7 +116,7 @@ namespace cms_wpf_app.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OrderComments");
+                    b.ToTable("OrderComments", (string)null);
                 });
 
             modelBuilder.Entity("cms_wpf_app.Models.Entities.OrderEntity", b =>
@@ -142,7 +142,7 @@ namespace cms_wpf_app.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("cms_wpf_app.Models.Entities.CustomerEntity", b =>

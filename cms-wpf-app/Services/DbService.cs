@@ -107,21 +107,29 @@ namespace cms_wpf_app.Services
         }
 
         //--------------Get Specific Order and comments
-        public async Task<OrderEntity> GetOrder(int Id)
+        public async Task<OrderModel> GetOrder(int Id)
         {
+
             var _order = await _context.Orders.FirstOrDefaultAsync(x => x.Id == Id);
 
+            var _orderComments = await _context.OrderComments.Where(x => x.OrderId == Id).ToListAsync();
+
+
             if (_order != null)
-                return _order;
+            {
+                var orderModel = new OrderModel
+                {
+                    Id = Id,
+                    CustomerId = _order.CustomerId,
+                    Status = _order.Status,
+                    OrderDate = _order.OrderDate,
+                    OrderMessage = _order.OrderMessage,
+                    Comments = _orderComments
+                };
+                return orderModel;
+            }
             return null!;
         }
-
-        public async Task<List<OrderCommentEntity>> GetOrderCommentsAsync(int Id)
-        {
-            return await _context.OrderComments.Where(x => x.OrderId == Id).ToListAsync();
-        }
-
-        //Hämta kommentar och användaren på en order + anändaren på kommentaren.
 
         //--------------------Save Order Comment to database
         private Guid CustomerId;
@@ -181,6 +189,16 @@ namespace cms_wpf_app.Services
             if (_order != null)
             {
                 _context.Remove(_order);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task RemoveCommentAsync(int id)
+        {
+            var _comment = await _context.OrderComments.FirstOrDefaultAsync(x => x.Id == id);
+            if (_comment != null)
+            {
+                _context.Remove(_comment);
                 await _context.SaveChangesAsync();
             }
         }

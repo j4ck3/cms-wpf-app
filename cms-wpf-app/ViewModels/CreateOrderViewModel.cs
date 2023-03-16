@@ -4,44 +4,41 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Threading.Tasks;
 
-namespace cms_wpf_app.ViewModels
+namespace cms_wpf_app.ViewModels;
+
+public partial class CreateOrderViewModel : Core.ViewModel
 {
-    public partial class CreateOrderViewModel : Core.ViewModel
+
+    [ObservableProperty]
+    private string pageTitle = "Submit an Order";
+
+    private DbService dbservice;
+
+    public CreateOrderViewModel()
     {
+        dbservice = new DbService();
+    }
 
-        [ObservableProperty]
-        private string pageTitle = "Create an Order";
+    [ObservableProperty]
+    private string inputUserName;
 
-        private DbService dbservice;
+    [ObservableProperty]
+    private string inputOrderMessage;
 
-        public CreateOrderViewModel()
+    [RelayCommand]
+    private async Task CreateOrder()
+    {
+        OrderModel order = new()
         {
-            dbservice = new DbService();
-        }
+            UserName = InputUserName,
+            OrderMessage = InputOrderMessage
+        };
 
-        [ObservableProperty]
-        private string inputUserName;
-
-        [ObservableProperty]
-        private string inputOrderMessage;
-
-        [RelayCommand]
-        private async Task CreateOrder()
-        {
-            OrderModel order = new()
-            {
-                UserName = InputUserName,
-                OrderMessage = InputOrderMessage
-            };
-
+        if (InputOrderMessage != null)
             await dbservice.SaveOrderToDbAsync(order);
-            //ClearForm();
-        }
 
-        //private static void ClearForm()
-        //{
-        //    nputUserName = string.Empty;
-        //    inputOrderMessage = string.Empty;
-        //}
+        //clear UI form
+        InputUserName = string.Empty;
+        InputOrderMessage = string.Empty;
     }
 }

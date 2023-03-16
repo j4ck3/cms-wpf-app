@@ -7,8 +7,6 @@ using cms_wpf_app.Services;
 namespace cms_wpf_app.Views;
 
 
-
-
 public partial class OrdersView : UserControl
 {
 
@@ -31,18 +29,15 @@ public partial class OrdersView : UserControl
         }
     }
 
-    private void Delete_order_Click(object sender, System.Windows.RoutedEventArgs e)
+    private async void Delete_order_Click(object sender, System.Windows.RoutedEventArgs e)
     {
+
         if (Orders_Grid.SelectedItem is OrderEntity order)
         {
-            int Id = order.Id;
-            if (Id != null)
+            if (MessageBox.Show($"Are you sure you want to delete the Order?",
+            "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                if (MessageBox.Show($"Are you sure you want to delete the Order?",
-                "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-                {
-                    _dbService.RemoveOrderAsync(Id);
-                }
+                await _dbService.RemoveOrderAsync(order.Id);
             }
         }
     }

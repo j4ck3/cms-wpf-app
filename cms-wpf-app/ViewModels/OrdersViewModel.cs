@@ -40,10 +40,9 @@ namespace cms_wpf_app.ViewModels
             GetAllOrders();
         }
 
-        private async Task<ObservableCollection<OrderEntity>> GetAllOrders()
+        private async Task GetAllOrders()
         {
             Orders = await dbService.GetOrdersAsync();
-            return Orders;
         }
     }
 }

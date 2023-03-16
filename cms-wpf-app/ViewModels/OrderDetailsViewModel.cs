@@ -1,20 +1,18 @@
 ﻿using cms_wpf_app.Models;
-using cms_wpf_app.Models.Entities;
 using cms_wpf_app.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
 namespace cms_wpf_app.ViewModels
 {
     public partial class OrderDetailsViewModel : Core.ViewModel
     {
-        private int Id;
+
+
+        #region init database service & navigation commands
+
         private DbService dbService;
-
-
         [ObservableProperty]
         private string pageTitle = $"Order";
 
@@ -29,76 +27,38 @@ namespace cms_wpf_app.ViewModels
             }
         }
         public Core.RelayCommand NavigateToOrdersViewCommand { get; set; }
+
+
+
         public OrderDetailsViewModel(INavigationService navigationService)
         {
             dbService = new DbService();
-            GetOrderFromDb(Id);
-            GetAllOrders();
-            
-
 
             Navigation = navigationService;
             NavigateToOrdersViewCommand = new Core.RelayCommand(o => { Navigation.NavigateTo<OrdersViewModel>(); }, o => true);
         }
 
-        [ObservableProperty]
-        private ObservableCollection<OrderEntity> orderList = new();
+        #endregion
 
-        private async Task<ObservableCollection<OrderEntity>> GetAllOrders()
+
+        #region get order and comments set to ObservableProperty
+        [ObservableProperty]
+        private OrderModel currentOrder;
+
+        private int id;
+
+        [ObservableProperty]
+        private int orderSearch;
+
+
+        [RelayCommand]
+        private async Task<OrderModel> GetOrder()
         {
-            return OrderList = await dbService.GetOrdersAsync();
-            // return OrderList;
+            return CurrentOrder = await dbService.GetOrder(OrderSearch);
         }
 
-        private OrderEntity? _selectedOrder;
+        #endregion
 
-        public OrderEntity? SelectedOrder
-        {
-            get
-            {
-                if (_selectedOrder != null)
-                    return _selectedOrder;
-                return null;
-            }
-            set
-            {
-                _selectedOrder = value;
-                OnPropertyChanged(nameof(SelectedOrder));
-            }
-        }
-
-
-        private async Task<OrderEntity> GetOrderFromDb(int Id)
-        {
-            var _orderModel = await dbService.GetOrder(Id);
-            return _orderModel;
-        }
-
-        [ObservableProperty]
-        private string orderMessage;
-        [ObservableProperty]
-        private string orderStatus;
-        [ObservableProperty]
-        private string orderDate;
-        [ObservableProperty]
-        private List<OrderCommentEntity> comments;
-
-
-        private void SetOrderData(OrderEntity _orderModel)
-        {
-            if (_orderModel != null)
-            {
-                //se enklare sätt.
-                Id = _orderModel.Id;
-                OrderMessage = _orderModel.OrderMessage;
-                OrderStatus = _orderModel.Status ?? null!;
-                OrderDate = _orderModel.OrderDate.ToString();
-            }
-        }
-        //private async Task GetOrderCommentsFromDbAsync(int Id)
-        //{
-        //    Comments = await dbService.GetOrderCommentsAsync(Id);
-        //}
 
         #region CreateComment
 
@@ -120,15 +80,13 @@ namespace cms_wpf_app.ViewModels
             {
                 Message = TbOrderComment,
                 UserName = TbUserNameCreateMessage,
-                OrderId = Id
+                OrderId = CurrentOrder.Id
             };
-            
-            await dbService.SaveCommentToDbAsync(comment);
 
-            ClearForm();
-        }
-        public void ClearForm()
-        {
+            if (TbOrderComment != null)
+            {
+                await dbService.SaveCommentToDbAsync(comment);
+            }
             TbOrderComment = string.Empty;
             TbUserNameCreateMessage = string.Empty;
         }
