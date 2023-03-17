@@ -1,4 +1,5 @@
 ﻿using cms_wpf_app.Models;
+using cms_wpf_app.Models.Entities;
 using cms_wpf_app.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -43,7 +44,7 @@ namespace cms_wpf_app.ViewModels
 
         #region get order and comments set to ObservableProperty
         [ObservableProperty]
-        private OrderModel currentOrder;
+        private OrderEntity currentOrder;
 
         private int id;
 
@@ -52,7 +53,7 @@ namespace cms_wpf_app.ViewModels
 
 
         [RelayCommand]
-        private async Task<OrderModel> GetOrder()
+        private async Task<OrderEntity> GetOrder()
         {
             return CurrentOrder = await dbService.GetOrder(OrderSearch);
         }
@@ -68,9 +69,11 @@ namespace cms_wpf_app.ViewModels
         [ObservableProperty]
         private string tbUserNameCreateMessage = string.Empty;
 
+        [ObservableProperty]
+        private string submitCommentStatus = string.Empty;
 
 
-        //---------Create COMMENTS---------
+        //---------Submit comment to order---------
 
         [RelayCommand]
         private async Task CreateComment()
@@ -85,7 +88,7 @@ namespace cms_wpf_app.ViewModels
 
             if (TbOrderComment != null)
             {
-                await dbService.SaveCommentToDbAsync(comment);
+                SubmitCommentStatus = await dbService.SaveCommentToDbAsync(comment);
             }
             TbOrderComment = string.Empty;
             TbUserNameCreateMessage = string.Empty;

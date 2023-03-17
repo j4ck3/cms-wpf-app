@@ -9,11 +9,12 @@ namespace cms_wpf_app.Models.Entities
         [Key]
         public int Id { get; set; }
 
-        public Guid? CustomerId { get; set; }
+        [Required]
+        public Guid CustomerId { get; set; }
 
-        public CustomerEntity? Customer { get; set; }
+        public virtual CustomerEntity Customer { get; set; } = null!;
 
-        public int OrderId { get; set; }
+        public int OrderEntityId { get; set; }
 
         [Column(TypeName = "nvarchar(500)")]
         public string Message { get; set; } = string.Empty;

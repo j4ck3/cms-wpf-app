@@ -18,9 +18,9 @@ namespace cms_wpf_app.ViewModels
             SetOrder(order);
             statusList = new ObservableCollection<StatusModel>
             {
-                new StatusModel { StatusLabel = "Pending" },
-                new StatusModel { StatusLabel = "Ongoing" },
-                new StatusModel { StatusLabel = "Completed" }
+                new StatusModel { StatusLabel = "PENDING" },
+                new StatusModel { StatusLabel = "ONGOING" },
+                new StatusModel { StatusLabel = "COMPLETED" }
             };
 
         }

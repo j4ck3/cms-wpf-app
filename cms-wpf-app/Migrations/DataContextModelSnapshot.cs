@@ -49,7 +49,7 @@ namespace cms_wpf_app.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Addresses", (string)null);
+                    b.ToTable("Addresses");
                 });
 
             modelBuilder.Entity("cms_wpf_app.Models.Entities.CustomerEntity", b =>
@@ -90,7 +90,7 @@ namespace cms_wpf_app.Migrations
                     b.HasIndex("UserName")
                         .IsUnique();
 
-                    b.ToTable("Customers", (string)null);
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("cms_wpf_app.Models.Entities.OrderCommentEntity", b =>
@@ -101,7 +101,7 @@ namespace cms_wpf_app.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<Guid?>("CustomerId")
+                    b.Property<Guid>("CustomerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Message")
@@ -111,12 +111,16 @@ namespace cms_wpf_app.Migrations
                     b.Property<DateTime>("MessageDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("OrderId")
+                    b.Property<int>("OrderEntityId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("OrderComments", (string)null);
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("OrderEntityId");
+
+                    b.ToTable("OrderComments");
                 });
 
             modelBuilder.Entity("cms_wpf_app.Models.Entities.OrderEntity", b =>
@@ -142,7 +146,9 @@ namespace cms_wpf_app.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Orders", (string)null);
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("cms_wpf_app.Models.Entities.CustomerEntity", b =>
@@ -154,6 +160,39 @@ namespace cms_wpf_app.Migrations
                         .IsRequired();
 
                     b.Navigation("Address");
+                });
+
+            modelBuilder.Entity("cms_wpf_app.Models.Entities.OrderCommentEntity", b =>
+                {
+                    b.HasOne("cms_wpf_app.Models.Entities.CustomerEntity", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("cms_wpf_app.Models.Entities.OrderEntity", null)
+                        .WithMany("OrderComments")
+                        .HasForeignKey("OrderEntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("cms_wpf_app.Models.Entities.OrderEntity", b =>
+                {
+                    b.HasOne("cms_wpf_app.Models.Entities.CustomerEntity", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("cms_wpf_app.Models.Entities.OrderEntity", b =>
+                {
+                    b.Navigation("OrderComments");
                 });
 #pragma warning restore 612, 618
         }

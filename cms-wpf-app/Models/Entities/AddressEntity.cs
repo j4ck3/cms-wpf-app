@@ -24,6 +24,6 @@ namespace cms_wpf_app.Models.Entities
         public string City { get; set; } = string.Empty;
 
         public ICollection<CustomerEntity> Customers = new HashSet<CustomerEntity>();
-        
+
     }
 }

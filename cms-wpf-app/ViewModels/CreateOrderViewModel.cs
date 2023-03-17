@@ -25,6 +25,9 @@ public partial class CreateOrderViewModel : Core.ViewModel
     [ObservableProperty]
     private string inputOrderMessage;
 
+    [ObservableProperty]
+    private string submitOrderStatus;
+
     [RelayCommand]
     private async Task CreateOrder()
     {
@@ -34,8 +37,8 @@ public partial class CreateOrderViewModel : Core.ViewModel
             OrderMessage = InputOrderMessage
         };
 
-        if (InputOrderMessage != null)
-            await dbservice.SaveOrderToDbAsync(order);
+        if (InputOrderMessage != null && InputUserName != null)
+            SubmitOrderStatus = await dbservice.SaveOrderToDbAsync(order);
 
         //clear UI form
         InputUserName = string.Empty;

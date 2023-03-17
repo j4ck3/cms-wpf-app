@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace cms_wpf_app.Services
@@ -53,26 +52,26 @@ namespace cms_wpf_app.Services
 
         //--------------Save Order to database
 
-        public async Task SaveOrderToDbAsync(OrderModel order)
+        public async Task<string> SaveOrderToDbAsync(OrderModel order)
         {
-            try
+
+            var _customer = await _context.Customers.FirstOrDefaultAsync(x => x.UserName == order.UserName);
+            if (_customer != null)
             {
-                var _customer = await _context.Customers.FirstOrDefaultAsync(x => x.UserName == order.UserName);
-                if (_customer != null)
-                    CustomerId = _customer.Id;
+                CustomerId = _customer.Id;
+                var _orderEntity = new OrderEntity
+                {
+                    CustomerId = CustomerId,
+                    OrderMessage = order.OrderMessage,
+                    Status = "PENDING",
+                    OrderDate = DateTime.Now,
+                };
+               
+                _context.Add(_orderEntity);
+                await _context.SaveChangesAsync();
+                return "Order was sent successfully!";
             }
-            catch{}
-
-            var _orderEntity = new OrderEntity
-            {
-                CustomerId = CustomerId != Guid.Empty ? CustomerId : Guid.Empty,
-                OrderMessage = order.OrderMessage,
-                Status = "Pending",
-                OrderDate = DateTime.Now,
-            };
-
-            _context.Add(_orderEntity);
-            await _context.SaveChangesAsync();
+            else return "No Account was found with the specified username!";
         }
 
 
@@ -103,56 +102,44 @@ namespace cms_wpf_app.Services
                     Address = _customerEntity.Address
                 });
 
-            return _customers;
+            if (_customers != null)
+                return _customers;
+
+            return null!;
         }
 
         //--------------Get Specific Order and comments
-        public async Task<OrderModel> GetOrder(int Id)
+        public async Task<OrderEntity> GetOrder(int Id)
         {
-
-            var _order = await _context.Orders.FirstOrDefaultAsync(x => x.Id == Id);
-
-            var _orderComments = await _context.OrderComments.Where(x => x.OrderId == Id).ToListAsync();
-
+            var _order = await _context.Orders.Include(x => x.Customer).ThenInclude(a => a.Address).Include(o => o.OrderComments).Include(c => c.Customer).FirstOrDefaultAsync(x => x.Id == Id);
 
             if (_order != null)
-            {
-                var orderModel = new OrderModel
-                {
-                    Id = Id,
-                    CustomerId = _order.CustomerId,
-                    Status = _order.Status,
-                    OrderDate = _order.OrderDate,
-                    OrderMessage = _order.OrderMessage,
-                    Comments = _orderComments
-                };
-                return orderModel;
-            }
+              return _order;
+         
             return null!;
         }
 
         //--------------------Save Order Comment to database
         private Guid CustomerId;
          
-        public async Task SaveCommentToDbAsync(OrderCommentModel comment)
+        public async Task<string> SaveCommentToDbAsync(OrderCommentModel comment)
         {
-            try
+            var _customer = await _context.Customers.FirstOrDefaultAsync(x => x.UserName == comment.UserName);
+            if (_customer != null)
             {
-                var _customer = await _context.Customers.FirstOrDefaultAsync(x => x.UserName == comment.UserName);
-                if (_customer != null)
-                    CustomerId = _customer.Id;
+                CustomerId = _customer.Id;
+                var _orderCommentEntity = new OrderCommentEntity
+                {
+                    CustomerId = CustomerId,
+                    OrderEntityId = comment.OrderId,
+                    Message = comment.Message,
+                    MessageDate = DateTime.Now,
+                };
+                _context.Add(_orderCommentEntity);
+                await _context.SaveChangesAsync();
+                return string.Empty;
             }
-            catch { }
-
-            var _orderCommentEntity = new OrderCommentEntity
-            {
-                CustomerId = CustomerId != Guid.Empty ? CustomerId : Guid.Empty,
-                OrderId = comment.OrderId,
-                Message = comment.Message,
-                MessageDate = DateTime.Now,
-            };
-            _context.Add(_orderCommentEntity);
-            await _context.SaveChangesAsync();
+            else return "No Account was found with the specified username!";
         }
         //--------------------Update Order
         public async Task UpdateOrderAsync(OrderModel order)

@@ -12,8 +12,8 @@ using cms_wpf_app.Data;
 namespace cms_wpf_app.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230301233634_DbInit")]
-    partial class DbInit
+    [Migration("20230316205903_Init_Db")]
+    partial class Init_Db
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace cms_wpf_app.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("cms_wpf_app.Models.Entities.AddressEntity", b =>
+            modelBuilder.Entity("cms_wpf_app.Models.Entities.AddressModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -90,6 +90,9 @@ namespace cms_wpf_app.Migrations
 
                     b.HasIndex("AddressId");
 
+                    b.HasIndex("UserName")
+                        .IsUnique();
+
                     b.ToTable("Customers");
                 });
 
@@ -111,10 +114,14 @@ namespace cms_wpf_app.Migrations
                     b.Property<DateTime>("MessageDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("OrderId")
+                    b.Property<int>("OrderEntityId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("OrderEntityId");
 
                     b.ToTable("OrderComments");
                 });
@@ -138,22 +145,55 @@ namespace cms_wpf_app.Migrations
                         .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("Status")
-                        .HasColumnType("nvarchar(15)");
+                        .HasColumnType("varchar(50)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
 
                     b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("cms_wpf_app.Models.Entities.CustomerEntity", b =>
                 {
-                    b.HasOne("cms_wpf_app.Models.Entities.AddressEntity", "Address")
+                    b.HasOne("cms_wpf_app.Models.Entities.AddressModel", "Address")
                         .WithMany()
                         .HasForeignKey("AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Address");
+                });
+
+            modelBuilder.Entity("cms_wpf_app.Models.Entities.OrderCommentEntity", b =>
+                {
+                    b.HasOne("cms_wpf_app.Models.Entities.CustomerEntity", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId");
+
+                    b.HasOne("cms_wpf_app.Models.Entities.OrderEntity", null)
+                        .WithMany("OrderComments")
+                        .HasForeignKey("OrderEntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("cms_wpf_app.Models.Entities.OrderEntity", b =>
+                {
+                    b.HasOne("cms_wpf_app.Models.Entities.CustomerEntity", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("cms_wpf_app.Models.Entities.OrderEntity", b =>
+                {
+                    b.Navigation("OrderComments");
                 });
 #pragma warning restore 612, 618
         }
