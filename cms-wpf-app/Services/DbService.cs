@@ -86,7 +86,7 @@ namespace cms_wpf_app.Services
 
 
         //--------------Get All Customers
-        public async Task<List<CustomerEntity>> GetCustomersAsync()
+        public async Task<IEnumerable<CustomerEntity>> GetCustomersAsync()
         {
             var _customers = new List<CustomerEntity>();
 

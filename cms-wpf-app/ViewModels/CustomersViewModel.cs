@@ -27,7 +27,7 @@ namespace cms_wpf_app.ViewModels
         private DbService dbService;
 
         [ObservableProperty]
-        public List<CustomerEntity> customers;
+        public IEnumerable<CustomerEntity> customers;
 
         public CustomersViewModel(INavigationService navigationService)
         {
@@ -39,7 +39,7 @@ namespace cms_wpf_app.ViewModels
 
         }
 
-        private async Task<List<CustomerEntity>> GetAllCustomersAsync()
+        private async Task<IEnumerable<CustomerEntity>> GetAllCustomersAsync()
         {
             Customers = await dbService.GetCustomersAsync();
             return Customers;

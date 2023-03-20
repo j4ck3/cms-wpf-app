@@ -14,6 +14,7 @@ namespace cms_wpf_app.Models.Entities
 
         public virtual CustomerEntity Customer { get; set; } = null!;
 
+        [Required]
         public int OrderEntityId { get; set; }
 
         [Column(TypeName = "nvarchar(500)")]

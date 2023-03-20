@@ -4,39 +4,40 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             
              xmlns:local="clr-namespace:cms_wpf_app.Views"
              xmlns:viewmodels="clr-namespace:cms_wpf_app.ViewModels"
              d:DataContext="{d:DesignInstance viewmodels:CreateViewModel}"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             Resources="{StaticResource MainStyleDictionary}"
+             Style="{StaticResource UcStyle}">
 
     <Grid>
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="400">
             <TextBlock Text="{Binding PageTitle}" HorizontalAlignment="Center" FontSize="22" FontWeight="Medium" Margin="0 0 0 20" />
-            <TextBlock Text="{Binding FormValidatoin}" HorizontalAlignment="Center" FontSize="12" FontWeight="Medium" Margin="0 0 0 20" />
-            <TextBlock Text="First Name" FontWeight="DemiBold" />
-            <TextBox Text="{Binding FirstName}" Padding="5"/>
+            <TextBlock Text="{Binding FormValidatoin}" Style="{StaticResource successTbStyle}" />
+            <TextBlock Text="First Name" />
+            <TextBox Style="{StaticResource tbStyle}" Text="{Binding FirstName}" Padding="5"/>
 
-            <TextBlock Text="Last Name" FontWeight="DemiBold" />
-            <TextBox Text="{Binding LastName}" Padding="5"/>
+            <TextBlock Text="Last Name" />
+            <TextBox Style="{StaticResource tbStyle}" Text="{Binding LastName}" Padding="5"/>
 
-            <TextBlock Text="Unique Username" FontWeight="DemiBold" />
-            <TextBox Text="{Binding UserName}" Padding="5"/>
+            <TextBlock Text="Unique Username" />
+            <TextBox Style="{StaticResource tbStyle}" Text="{Binding UserName}" Padding="5"/>
 
-            <TextBlock Text="E-Mail" FontWeight="DemiBold" />
-            <TextBox Text="{Binding Email}" Padding="5"/>
+            <TextBlock Text="E-Mail" />
+            <TextBox Style="{StaticResource tbStyle}" Text="{Binding Email}" Padding="5"/>
 
-            <TextBlock Text="Phone number" FontWeight="DemiBold" />
-            <TextBox Text="{Binding PhoneNumber}" Padding="5"/>
+            <TextBlock Text="Phone number" />
+            <TextBox Style="{StaticResource tbStyle}" Text="{Binding PhoneNumber}" Padding="5"/>
 
-            <TextBlock Text="Street Name" FontWeight="DemiBold" />
-            <TextBox Text="{Binding StreetName}" Padding="5"/>
+            <TextBlock Text="Street Name"  />
+            <TextBox Style="{StaticResource tbStyle}" Text="{Binding StreetName}" Padding="5"/>
 
-            <TextBlock Text="Postal Code" FontWeight="DemiBold" />
-            <TextBox Text="{Binding PostalCode}" Padding="5"/>
+            <TextBlock Text="Postal Code" />
+            <TextBox Style="{StaticResource tbStyle}" Text="{Binding PostalCode}" Padding="5"/>
 
-            <TextBlock Text="City" FontWeight="DemiBold" />
-            <TextBox Text="{Binding City}" Padding="5"/>
+            <TextBlock Text="City" />
+            <TextBox Style="{StaticResource tbStyle}" Text="{Binding City}" Padding="5"/>
 
             <Button Command="{Binding CreateCustomerCommand}" Margin="0 5 0 0" Padding="4" Content="Register"/>
         </StackPanel>

@@ -6,7 +6,9 @@
              mc:Ignorable="d" 
              xmlns:viewmodels="clr-namespace:cms_wpf_app.ViewModels"
              d:DataContext="{d:DesignInstance viewmodels:OrderDetailsViewModel}"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             Resources="{StaticResource MainStyleDictionary}"
+             Style="{StaticResource UcStyle}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -19,14 +21,14 @@
             <StackPanel Orientation="Vertical">
                 <Button Command="{Binding NavigateToOrdersViewCommand}" Padding="4" Content="Back to Orders" HorizontalContentAlignment="Left" Width="150" HorizontalAlignment="Left" Margin="0 0 0 10"/>
             </StackPanel>
-            <TextBlock Text="Sender" FontSize="16" FontWeight="Bold" Margin="0 10 0 20"/>
+            <TextBlock Text="Sender" FontSize="12" Margin="0 10 0 25"/>
 
             <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
-                <TextBlock Text="{Binding CurrentOrder.Customer.FirstName}" FontSize="14" Margin="0 0 10 0"/>
-                <TextBlock Text="{Binding CurrentOrder.Customer.LastName}" FontSize="14" />
+                <TextBlock Text="{Binding CurrentOrder.Customer.FirstName}" FontSize="16" Margin="0 0 10 10"/>
+                <TextBlock Text="{Binding CurrentOrder.Customer.LastName}" FontSize="16" />
             </StackPanel>
 
-            <StackPanel Orientation="Horizontal" Margin="0 0 0 15">
+            <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
                 <TextBlock Text="{Binding CurrentOrder.Customer.Email}" FontSize="14"  Margin="0 0 10 0"/>
                 <TextBlock Text="{Binding CurrentOrder.Customer.PhoneNumber}" FontSize="14" />
             </StackPanel>
@@ -38,41 +40,38 @@
             </StackPanel>
         </StackPanel>
 
-        <StackPanel Grid.Column="1" Grid.ColumnSpan="2" Margin="0 50 20 0">
+        <StackPanel Grid.Column="1" Grid.ColumnSpan="2" Margin="0 50 50 0">
             <!--Search order-->
-            <StackPanel >
-                <StackPanel Orientation="Horizontal">
-                    <TextBox Text="{Binding OrderSearch}" Padding="7" Width="280" Margin="0 0 10 0" />
-                    <Button Content="Search Order By ID"  Command="{Binding GetOrderCommand}" Width="110"/>
-                </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0 0 0 60">
+                <TextBox Style="{StaticResource tbStyle}" Text="{Binding OrderSearch}" Padding="7" Width="100" />
+                <Button Content="Search Order By ID" Command="{Binding GetOrderCommand}"/>
             </StackPanel>
 
             <!--Order-->
-            <StackPanel >
-                <StackPanel Orientation="Vertical">
-                    <TextBlock Text="{Binding CurrentOrder.OrderDate}" Foreground="#292929"  FontWeight="DemiBold"/>
-                    <TextBlock Text="{Binding CurrentOrder.Status}" Foreground="#292929" FontWeight="DemiBold" HorizontalAlignment="Right"/>
-                </StackPanel>
-                <TextBlock Text="{Binding CurrentOrder.OrderMessage}" FontSize="18"/>
+            <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
+                <TextBlock Text="{Binding CurrentOrder.OrderDate}" Foreground="#aaa" Margin="0 0 30 0" VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding CurrentOrder.Status}" VerticalAlignment="Center"/>
             </StackPanel>
+
+
+            <TextBlock Text="{Binding CurrentOrder.OrderMessage}" FontSize="18" Margin="0 0 0 30"/>
 
 
             <!--Order Comments-->
             <StackPanel>
-                <TextBlock Text="Comments" FontSize="16" FontWeight="Medium" Margin="0 10 0 10"/>
-                <ListView Background="Transparent"  ItemsSource="{Binding CurrentOrder.OrderComments}" BorderBrush="Transparent" HorizontalContentAlignment="Stretch">
+                <ListView Background="Transparent" ItemsSource="{Binding CurrentOrder.OrderComments}" BorderBrush="Transparent" HorizontalContentAlignment="Stretch">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid Margin="0 5 0 5">
-                                <StackPanel  HorizontalAlignment="Left"  Orientation="Vertical">
+                            <Grid>
+                                <StackPanel  HorizontalAlignment="Left" Orientation="Vertical" Margin="0 0 0 15">
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock FontSize="14" Text="{Binding Customer.FirstName}" Margin="0 0 10 0" FontWeight="SemiBold"/>
-                                        <TextBlock FontSize="10" Text="{Binding MessageDate}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                        <TextBlock Style="{StaticResource lvTbStyle}" FontSize="11" Text="{Binding Customer.FirstName}" Margin="0 0 10 0"/>
+                                        <TextBlock Style="{StaticResource lvTbStyle}" FontSize="10" Text="{Binding MessageDate}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                                     </StackPanel>
-                                    <TextBlock FontSize="14" Text="{Binding Message}"/>
+                                    <TextBlock Style="{StaticResource lvTbStyle}" FontSize="14" FontWeight="Bold" Text="{Binding Message}" VerticalAlignment="Bottom"/>
                                 </StackPanel>
                                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                                    <Button Content="Remove" Click="Button_Click"/>
+                                    <Button Content="Remove" Click="Button_Click" Height="30" VerticalAlignment="Top"/>
                                 </StackPanel>
                             </Grid>
                         </DataTemplate>
@@ -85,14 +84,14 @@
             <StackPanel>
                 <StackPanel Orientation="Vertical" Margin="0 5 0 0">
 
-                    <TextBlock Text="{Binding SubmitCommentStatus}" FontWeight="Medium" HorizontalAlignment="Center" Margin="0 0 0 15" />
-                    <TextBlock Text="Your Username" FontWeight="DemiBold" />
-                    <TextBox Text="{Binding TbUserNameCreateMessage}" Padding="7"/>
+                    <TextBlock Text="{Binding SubmitCommentStatus}" HorizontalAlignment="Center" Margin="0 0 0 15" />
+                    <TextBlock Text="Username" />
+                    <TextBox Text="{Binding TbUserNameCreateMessage}" Style="{StaticResource tbStyle}" Padding="7"/>
 
-                    <TextBlock Text="*Comment" FontWeight="DemiBold" />
-                    <TextBox Text="{Binding TbOrderComment}" Padding="7"/>
+                    <TextBlock Text="Comment"/>
+                    <TextBox Text="{Binding TbOrderComment}" Padding="7" Style="{StaticResource tbStyle}"/>
 
-                    <Button Command="{Binding CreateCommentCommand}" Padding="4" Content="Post Comment"/>
+                    <Button Command="{Binding CreateCommentCommand}" Padding="4" Content="Post Comment" HorizontalAlignment="Right" Width="200" Margin="0 10 0 0"/>
                 </StackPanel>
             </StackPanel>
         </StackPanel>

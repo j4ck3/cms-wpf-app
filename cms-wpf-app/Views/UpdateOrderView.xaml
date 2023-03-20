@@ -6,16 +6,18 @@
              xmlns:viewmodels="clr-namespace:cms_wpf_app.ViewModels"
              d:DataContext="{d:DesignInstance viewmodels:UpdateOrderViewModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             Resources="{StaticResource MainStyleDictionary}"
+             Style="{StaticResource UcStyle}">
     <Grid>
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="400">
             <TextBlock Text="{Binding PageTitle}" HorizontalAlignment="Center" FontSize="22" FontWeight="Medium" Margin="0 0 0 20" />
 
             <TextBlock Text="Username" FontWeight="DemiBold" />
-            <TextBox Text="{Binding InputUserName}" Padding="5"/>
+            <TextBox Style="{StaticResource tbStyle}" Text="{Binding InputUserName}" Padding="5"/>
 
-            <TextBlock Text="*Message" FontWeight="DemiBold" />
-            <TextBox Text="{Binding InputOrderMessage}" Padding="5"/>
+            <TextBlock Text="Message" FontWeight="DemiBold" />
+            <TextBox Style="{StaticResource tbStyle}" Text="{Binding InputOrderMessage}" Padding="5"/>
 
             <TextBlock Text="Current order status" FontWeight="DemiBold" />
             <TextBlock Text="{Binding OrderStatus}" Padding="5"/>

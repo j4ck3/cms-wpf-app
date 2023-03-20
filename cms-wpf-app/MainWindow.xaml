@@ -7,21 +7,22 @@
         xmlns:viewmodels="clr-namespace:cms_wpf_app.ViewModels"
         d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
         mc:Ignorable="d"
-        Title="CMS App" Height="720" Width="1280">
+        Title="CMS App" Height="720" Width="1280"
+        Resources="{StaticResource MainStyleDictionary}">
     <Grid>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="110"/>
+            <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
 
         <!--MENU-->
-        <StackPanel Grid.Column="0" Grid.Row="0" Background="#12474A">
-            <Button Margin="15" Padding="0 5 0 5" Content="Orders" Command="{Binding NavigateToOrdersViewCommand}"/>
-            <Button Margin="15 0 15 15" Padding="0 5 0 5" Content="Customers"  Command="{Binding NavigateToCustomersViewCommand}"/>
-            <Button Margin="15 0 15 15" Padding="0 5 0 5" Content="Register"  Command="{Binding NavigateToCreateCustomerViewCommand}"/>
-            <Button Margin="15 0 15 15" Padding="0 5 0 5" Content="Create Order"  Command="{Binding NavigateToCreateOrderViewCommand}"/>
+        <StackPanel Grid.Column="0" Grid.Row="0" Background="#14161a">
+            <Button Margin="15" Padding="0 5 0 5" Content="Orders" Command="{Binding NavigateToOrdersViewCommand}" Background="Black"/>
+            <Button Margin="15 0 15 15" Padding="0 5 0 5" Content="Customers" Command="{Binding NavigateToCustomersViewCommand}" Background="Black"/>
+            <Button Margin="15 0 15 15" Padding="0 5 0 5" Content="Register" Command="{Binding NavigateToCreateCustomerViewCommand}" Background="Black"/>
+            <Button Margin="15 0 15 15" Padding="0 5 0 5" Content="Create Order" Command="{Binding NavigateToCreateOrderViewCommand}" Background="Black"/>
         </StackPanel>
 
         <!--BODY-->
